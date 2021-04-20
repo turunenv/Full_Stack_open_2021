@@ -16,7 +16,6 @@ const deleteFromDB = (id, handleFail) => {
         // const res = request.then(response => response.data);
         // console.log(res.then(arr => arr.length));
         axios.delete(`${baseUrl}/${id}`)
-        .then(response => console.log(response))
         .catch(error => {
             console.log(error);
             handleFail();
@@ -24,7 +23,7 @@ const deleteFromDB = (id, handleFail) => {
 }
 
 const update = (updatedPerson) => {
-    console.log(`${baseUrl}/${updatedPerson.id}`)
+    //console.log(`${baseUrl}/${updatedPerson.id}`)
     const request = axios.put(`${baseUrl}/${updatedPerson.id}`, updatedPerson);
     return request.then(response => response.data);
 }

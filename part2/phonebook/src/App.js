@@ -13,7 +13,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [filter, setFilter] = useState('');
   const [userMessage, setUserMessage] = useState({ message: null, className: ''});
-  console.log(newName, newName.length);
+  
   //Event handlers for onChange events when user types something in the input elements
   const handleNameChange = (e) => {
     setNewName(e.target.value);
@@ -58,7 +58,7 @@ const App = () => {
     //If name is already added, offer the user a chance to update the number (exercise 2.18)
     //Get rid of unnecessary whitespace at this point with .trim()
     const nameToAdd = newName.trim();
-    console.log(`Now newName is ${newName} (${newName.length} chars), while trimmed nameToAdd is ${nameToAdd}, with ${nameToAdd.length} chars`)
+    //console.log(`Now newName is ${newName} (${newName.length} chars), while trimmed nameToAdd is ${nameToAdd}, with ${nameToAdd.length} chars`)
 
     if (isPersonAlreadyAdded(nameToAdd)) {
       if(window.confirm(`${nameToAdd} is already in the notebook. Do you want to replace the old number with the new one (${newNumber})?`)) {
@@ -76,13 +76,13 @@ const App = () => {
     } else {
         //Avoid adding same ID after deleting a person by using the last id on the persons-array + 1 unless empty array
         const decidedID = persons.length > 0 ? parseInt(persons[persons.length - 1].id) + 1 : 1;
-        console.log(decidedID);
+        
         const newPerson = {
           name: nameToAdd,
           number: newNumber,
           id: decidedID
         }
-        console.log(newPerson);
+        
     
         backEnd.create(newPerson)
           .then(newPerson => {

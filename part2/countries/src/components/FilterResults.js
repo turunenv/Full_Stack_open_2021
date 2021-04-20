@@ -36,7 +36,7 @@ const FilterResults = ({countries, filter}) => {
         )
     } else if (numCountries === 1) {
         const country = filteredCountries[0];
-        console.log(country.languages);
+        
         return <FullCountryInfo country={country}/>
     } else {
         return <div>No matches found</div>
