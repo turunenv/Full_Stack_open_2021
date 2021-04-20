@@ -46,6 +46,22 @@ const App = () => {
           id: 2
         }
       ]
+    }, 
+    {
+      name: 'CSS Layout',
+      id: 3,
+      parts: [
+        {
+          name: 'Flexbox',
+          exercises: 5,
+          id: 1
+        },
+        {
+          name: 'Grid',
+          exercises: 10,
+          id: 2
+        }
+      ]
     }
   ]
 

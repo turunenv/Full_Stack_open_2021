@@ -5,9 +5,9 @@ import Header from './Header'
   const Total = ({ course }) => {
      const parts = course.parts;
      let total;
-     total = parts.reduce((a,b) => {
-       return a + b.exercises
-     },0)
+     total = parts.reduce((accumulator, part) => {
+       return accumulator + part.exercises
+     }, 0)
      return (
             <p>
               <b>total of {total} exercises</b>
