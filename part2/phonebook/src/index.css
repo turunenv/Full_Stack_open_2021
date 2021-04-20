@@ -5,14 +5,24 @@ body {
 }
 
 
-.userAddedSuccess {
+.userMsg {
     font-size: 30px;
     padding: 10px;
+    border-radius: 10px;
+}
+.userMsg.userAddedSuccess {
     border: 3px solid blue;
     background-color: green;
     color: white;
-    border-radius: 10px;
 }
+.userMsg.deleteFailed {
+    border: 5px dashed red;
+    background-color: lightgray;
+    color: darkred;
+}
+
+
+
 .phoneBookEntry {
     list-style-type: none;
 }

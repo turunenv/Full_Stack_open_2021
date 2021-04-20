@@ -1,7 +1,7 @@
 import React from 'react';
 import PhonebookEntry from './PhonebookEntry';
 
-//Persons only needs the persons array as props -> using destructuring right away
+
 const Persons = ({persons, deletePerson}) => {
     return (
         <ul>

@@ -11,11 +11,16 @@ const create = newObject => {
     return request.then(response => response.data);
 }
 
-const deleteFromDB = id => {
-        const request = axios.get(baseUrl);
-        const res = request.then(response => response.data);
-        console.log(res.then(arr => arr.length));
-        axios.delete(`${baseUrl}/${id}`);        
+const deleteFromDB = (id, handleFail) => {
+        // const request = axios.get(baseUrl);
+        // const res = request.then(response => response.data);
+        // console.log(res.then(arr => arr.length));
+        axios.delete(`${baseUrl}/${id}`)
+        .then(response => console.log(response))
+        .catch(error => {
+            console.log(error);
+            handleFail();
+        })        
 }
 
 const update = (updatedPerson) => {

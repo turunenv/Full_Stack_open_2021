@@ -13,7 +13,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [filter, setFilter] = useState('');
   const [userMessage, setUserMessage] = useState({ message: null, className: ''});
-
+  console.log(newName, newName.length);
   //Event handlers for onChange events when user types something in the input elements
   const handleNameChange = (e) => {
     setNewName(e.target.value);
@@ -32,47 +32,77 @@ const App = () => {
     }, 3000)
   }
 
+  //function for checking if a person is already added with newName when submitting
+  function isPersonAlreadyAdded(name) {
+    let foundIndex;
+    foundIndex = persons.findIndex(function(person) {
+      return name === person.name;
+    })
+    if (foundIndex === - 1) {
+      return false;
+    }
+    return true;
+  }
+
+  //function for copying and adding a new phonenumber to a persons object -> returns the updated person
+  function updatePhoneNumber(name, number) {
+    let personToUpdate = persons.find(person => person.name === name);
+    let updatedPerson = {...personToUpdate, number: number}
+    return updatedPerson;
+  }
+
   //Event handler for adding a person object to the persons list
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newPerson = {
-      name: newName,
-      number: newNumber,
-      id: `${persons.length + 1}`
-    }
-
-    
     //If name is already added, offer the user a chance to update the number (exercise 2.18)
-    const addedIndex = persons.findIndex(person => person.name === newName)
-    if (addedIndex !== -1) {
-      if(window.confirm(`${newName} is already in the notebook. Do you want to replace the old number with the new one (${newNumber})?`)) {
-        newPerson.id = addedIndex + 1;
-        backEnd.update(newPerson)
+    //Get rid of unnecessary whitespace at this point with .trim()
+    const nameToAdd = newName.trim();
+    console.log(`Now newName is ${newName} (${newName.length} chars), while trimmed nameToAdd is ${nameToAdd}, with ${nameToAdd.length} chars`)
+
+    if (isPersonAlreadyAdded(nameToAdd)) {
+      if(window.confirm(`${nameToAdd} is already in the notebook. Do you want to replace the old number with the new one (${newNumber})?`)) {
+        let updatedPerson = updatePhoneNumber(nameToAdd, newNumber);
+        backEnd.update(updatedPerson)
           .then(updatedPerson => {
             setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
           })
+          setUserMessage({ message: `Updated the number of ${updatedPerson.name} succesfully!`, className: "userMsg userAddedSuccess"})
+          removeUserMessage();
       }
       setNewName('');
       setNewNumber('');
-      setUserMessage({ message: `Updated the number of ${newPerson.name} succesfully!`, className: "userAddedSuccess"})
-      removeUserMessage();
-      return
-    }
-    console.log(newPerson);
+      
+    } else {
+        //Avoid adding same ID after deleting a person by using the last id on the persons-array + 1 unless empty array
+        const decidedID = persons.length > 0 ? parseInt(persons[persons.length - 1].id) + 1 : 1;
+        console.log(decidedID);
+        const newPerson = {
+          name: nameToAdd,
+          number: newNumber,
+          id: decidedID
+        }
+        console.log(newPerson);
     
-    backEnd.create(newPerson)
-      .then(newPerson => {
-        setPersons(persons.concat(newPerson));
-        setNewName('');
-        setNewNumber('');
-        setUserMessage({ message: `Added ${newPerson.name} succesfully!`, className: "userAddedSuccess"})
-        removeUserMessage();  
-      })
+        backEnd.create(newPerson)
+          .then(newPerson => {
+            setPersons(persons.concat(newPerson));
+            setNewName('');
+            setNewNumber('');
+            setUserMessage({ message: `Added ${newPerson.name} succesfully!`, className: "userMsg userAddedSuccess"})
+            removeUserMessage();  
+          })
+      }
   };
+
+  function deleteFailed(name) {
+    setUserMessage({ message: `Information of ${name} was already removed from the server`, className: "userMsg deleteFailed"})
+    removeUserMessage(); 
+  }
+
   const deletePerson = (person) => {
     if(window.confirm(`Are you sure you want to delete ${person.name}?`)) {
-      backEnd.deleteFromDB(person.id);
+      backEnd.deleteFromDB(person.id, () => deleteFailed(person.name));
       let personCopy = [...persons];
       console.log("Value of state persons before splice:", personCopy.length)
       for(let i = 0; i < persons.length; i++) {
