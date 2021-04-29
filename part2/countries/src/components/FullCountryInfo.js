@@ -9,12 +9,12 @@ const FullCountryInfo = ({ country }) => {
     const api_key = process.env.react_app_api_key;
     
     useEffect(() => {
-        console.log("UseEffect fired at FullCountryInfo.js weatherstack.com request incoming...")
+        //console.log("UseEffect fired at FullCountryInfo.js weatherstack.com request incoming...")
         axios
           .get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${country.name}`)
           .then(response => setWeather(response.data.current));
           
-    }, [])
+    }, [api_key, country.name])
     
      
 

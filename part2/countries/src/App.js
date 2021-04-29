@@ -4,7 +4,7 @@ import Filter from './components/Filter'
 import FilterResults from './components/FilterResults'
 
 function App() {
-  console.log("Aaaaand the api key is...", process.env.react_app_api_key)
+  //console.log("Aaaaand the api key is...", process.env.react_app_api_key)
   
   //useState hooks to hold the values of the filter and the countries-array
   const [filter, setFilter] = useState('');

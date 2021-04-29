@@ -3,7 +3,6 @@ import React from 'react';
 const WeatherDisplay = ({weather, capital}) => {
 
     if(!weather.temperature) {
-        console.log("WeatherDisplay tried to render an empty weather object...")
         return <></>
     }
     return (
