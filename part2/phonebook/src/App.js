@@ -92,11 +92,15 @@ const App = () => {
             setUserMessage({ message: `Added ${newPerson.name} succesfully!`, className: "userMsg userAddedSuccess"})
             removeUserMessage();  
           })
+          .catch(error => {
+            setUserMessage({ message: error.response.data.error, className: "userMsg errorMsg"})
+            removeUserMessage();
+          })
       }
   };
 
   function deleteFailed(name) {
-    setUserMessage({ message: `Information of ${name} was already removed from the server`, className: "userMsg deleteFailed"})
+    setUserMessage({ message: `Information of ${name} was already removed from the server`, className: "userMsg errorMsg"})
     removeUserMessage(); 
   }
 

@@ -15,7 +15,7 @@ body {
     background-color: green;
     color: white;
 }
-.userMsg.deleteFailed {
+.userMsg.errorMsg {
     border: 5px dashed red;
     background-color: lightgray;
     color: darkred;
