@@ -1,0 +1,11 @@
+{
+  "name": "bloglist",
+  "version": "1.0.0",
+  "description": "app to allow users to save information about interesting blogs they have found online",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Verneri Turunen",
+  "license": "ISC"
+}
