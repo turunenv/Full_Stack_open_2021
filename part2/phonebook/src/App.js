@@ -66,9 +66,14 @@ const App = () => {
         backEnd.update(updatedPerson)
           .then(updatedPerson => {
             setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
+            setUserMessage({ message: `Updated the number of ${updatedPerson.name} succesfully!`, className: "userMsg userAddedSuccess"})
+            removeUserMessage();
           })
-          setUserMessage({ message: `Updated the number of ${updatedPerson.name} succesfully!`, className: "userMsg userAddedSuccess"})
-          removeUserMessage();
+          .catch(error => {
+            setUserMessage({ message: error.response.data.error, className: "userMsg errorMsg"})
+            removeUserMessage();
+          })
+          
       }
       setNewName('');
       setNewNumber('');
