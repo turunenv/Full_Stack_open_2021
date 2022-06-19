@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-    "title": "javascript basics",
+    "title": "python basics",
     "author": "Veku Turunen",
-    "url": "https://awesomeblog.com/jsisbestlol",
-    "likes": 1000000
+    "url": "https://awesomeblog.com/python",
+    "likes": 10000
 }
