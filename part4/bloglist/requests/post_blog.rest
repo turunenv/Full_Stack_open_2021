@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+content-type: application/json
+
+{
+    "title": "javascript basics",
+    "author": "Veku Turunen",
+    "url": "https://awesomeblog.com/jsisbestlol",
+    "likes": 1000000
+}
