@@ -1,4 +1,5 @@
 const listHelper = require('../utils/list_helper');
+const testCases = require('../utils/testCases');
 
 test('dummy returns one', () => {
     const blogs = [];
@@ -7,93 +8,28 @@ test('dummy returns one', () => {
     expect(result).toBe(1);
 })
 
- // Define the test cases
- const emptyList = [];
-
- const listWithOneBlog = [
-     {
-       _id: '5a422aa71b54a676234d17f8',
-       title: 'Go To Statement Considered Harmful',
-       author: 'Edsger W. Dijkstra',
-       url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-       likes: 10,
-       __v: 0
-     }
-   ];
-
- const listWithMultipleBlogs = [
-     {
-       _id: "5a422a851b54a676234d17f7",
-       title: "React patterns",
-       author: "Michael Chan",
-       url: "https://reactpatterns.com/",
-       likes: 7,
-       __v: 0
-     },
-     {
-       _id: "5a422aa71b54a676234d17f8",
-       title: "Go To Statement Considered Harmful",
-       author: "Edsger W. Dijkstra",
-       url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-       likes: 5,
-       __v: 0
-     },
-     {
-       _id: "5a422b3a1b54a676234d17f9",
-       title: "Canonical string reduction",
-       author: "Edsger W. Dijkstra",
-       url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-       likes: 12,
-       __v: 0
-     },
-     {
-       _id: "5a422b891b54a676234d17fa",
-       title: "First class tests",
-       author: "Robert C. Martin",
-       url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-       likes: 10,
-       __v: 0
-     },
-     {
-       _id: "5a422ba71b54a676234d17fb",
-       title: "TDD harms architecture",
-       author: "Robert C. Martin",
-       url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-       likes: 0,
-       __v: 0
-     },
-     {
-       _id: "5a422bc61b54a676234d17fc",
-       title: "Type wars",
-       author: "Robert C. Martin",
-       url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-       likes: 2,
-       __v: 0
-     }  
-   ];
-
 
 describe('total likes', () => {
 
       test('when list has only one blog, equals the likes of that', () => {
-        const result = listHelper.totalLikes(listWithOneBlog)
+        const result = listHelper.totalLikes(testCases.listWithOneBlog)
         expect(result).toBe(10)
       });
 
       test('when list is empty, equals zero', () => {
-        const result = listHelper.totalLikes(emptyList);
+        const result = listHelper.totalLikes(testCases.emptyList);
         expect(result).toBe(0);
       });
 
       test('when multiple blogs, equals the total sum of likes', () => {
-        const result = listHelper.totalLikes(listWithMultipleBlogs);
+        const result = listHelper.totalLikes(testCases.listWithMultipleBlogs);
         expect(result).toBe(36);
       })
 });
 
 describe('favorite blog', () => {
     test('when list has only one blog, that blog is returned in the correct format', () => {
-        const result = listHelper.favoriteBlog(listWithOneBlog);
+        const result = listHelper.favoriteBlog(testCases.listWithOneBlog);
         expect(result).toEqual(
             {
                 title: 'Go To Statement Considered Harmful',
@@ -104,12 +40,12 @@ describe('favorite blog', () => {
     });
 
     test('when list is empty, an empty object is returned', () => {
-        const result = listHelper.favoriteBlog(emptyList);
+        const result = listHelper.favoriteBlog(testCases.emptyList);
         expect(result).toEqual({});
     });
 
     test('when list has multiple blogs, the correct one is returned in the correct format', () => {
-        const result = listHelper.favoriteBlog(listWithMultipleBlogs);
+        const result = listHelper.favoriteBlog(testCases.listWithMultipleBlogs);
         expect(result).toEqual(
             {
                 title: "Canonical string reduction",
@@ -118,4 +54,78 @@ describe('favorite blog', () => {
             }
         )
     })
+})
+
+describe('author with the most blogs written', () => {
+  test('when list has only one blog, that author is returned in the correct format', () => {
+      const result = listHelper.mostBlogs(testCases.listWithOneBlog);
+      expect(result).toEqual(
+          {
+              author: 'Edsger W. Dijkstra',
+              blogs: 1,
+          }
+      );
+  });
+
+  test('when list is empty, an empty object is returned', () => {
+      const result = listHelper.mostBlogs(testCases.emptyList);
+      expect(result).toEqual({});
+  });
+
+  test('when list has multiple blogs, the correct author is returned with the number of blogs written', () => {
+      const result = listHelper.mostBlogs(testCases.listWithMultipleBlogs);
+      expect(result).toEqual(
+          {
+            author: "Robert C. Martin",
+            blogs: 3
+          }
+      )
+  });
+
+  test('when multiple authors have same amount of blogs written (being the top writers), only one is returned', () => {
+    const result = listHelper.mostBlogs(testCases.listWithManyTopBloggers);
+    expect(result).toEqual(
+      expect.objectContaining({
+        author: expect.any(String),
+        blogs: expect.any(Number),
+      })
+    )
+  })
+})
+
+describe('author with the most likes', () => {
+  test('when list has only one blog, that author is returned in the correct format', () => {
+      const result = listHelper.mostLikes(testCases.listWithOneBlog);
+      expect(result).toEqual(
+          {
+              author: 'Edsger W. Dijkstra',
+              likes: 10,
+          }
+      );
+  });
+
+  test('when list is empty, an empty object is returned', () => {
+      const result = listHelper.mostLikes(testCases.emptyList);
+      expect(result).toEqual({});
+  });
+
+  test('when list has multiple blogs, the correct author is returned with the number of blogs written', () => {
+      const result = listHelper.mostLikes(testCases.listWithMultipleBlogs);
+      expect(result).toEqual(
+          {
+            author: "Edsger W. Dijkstra",
+            likes: 17,
+          }
+      )
+  });
+
+  test('when multiple authors have same amount of likes, only one is returned', () => {
+    const result = listHelper.mostLikes(testCases.listWithManySameLikes);
+    expect(result).toEqual(
+      expect.objectContaining({
+        author: expect.any(String),
+        likes: expect.any(Number),
+      })
+    )
+  })
 })
