@@ -19,4 +19,11 @@ test('all blogs are returned in json format', async () => {
                             .expect('Content-Type', /application\/json/)
     expect(response.body).toHaveLength(helper.initialBlogs.length);
     
+});
+
+test('all blogs have the id property', async () => {
+    const response = await api.get('/api/blogs');
+    
+    //check that all blogs have the id property
+    response.body.forEach(blog => expect(blog.id).toBeDefined());
 })
