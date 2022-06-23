@@ -82,7 +82,6 @@ describe('adding a new blog', () => {
 test('deleting a blog based on id', async() => {
     const initialBlogs = await helper.blogsInDb();
     const idToDelete = initialBlogs[0].id;
-    console.log(idToDelete);
 
     await api
             .delete(`/api/blogs/${idToDelete}`)
@@ -97,4 +96,20 @@ test('deleting a blog based on id', async() => {
     const ids = notesAfterDeleting.map(note => note.id);
     expect(ids).not.toContain(idToDelete); 
 
-})
+});
+
+test('updating a blog with a correctly formatted put-request', async() => {
+    const initialBlogs = await helper.blogsInDb();
+    const idToUpdate = initialBlogs[0].id;
+    const blogToUpdate = initialBlogs[0];
+
+    blogToUpdate.likes = 99999;
+
+    await api
+            .put(`/api/blogs/${idToUpdate}`)
+            .send(blogToUpdate)
+            
+    const updatedBlog = await helper.blogById(idToUpdate);
+
+    expect(updatedBlog).toEqual(blogToUpdate);
+}) 

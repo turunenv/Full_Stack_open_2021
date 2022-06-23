@@ -21,7 +21,7 @@ const blogsInDb = async() => {
 };
 
 const blogById = async(id) => {
-    const blog = await Blog.find({id:id});
+    const blog = await Blog.findOne({id:id});
     return blog.toJSON();
 }
 
