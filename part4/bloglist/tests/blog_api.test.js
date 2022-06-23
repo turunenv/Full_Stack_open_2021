@@ -63,6 +63,18 @@ describe('adding a new blog', () => {
                             .expect(201)
                             .expect('Content-Type', /application\/json/);
         expect(response.body.likes).toBe(0);
+    });
+
+    test('server responds with 400 Bad Request when title and url are missing', async() => {
+        const blogWithNoUrlAndTitle = {
+            author: "mr noOne",
+            likes: 100000,
+        };
+
+        await api
+                .post('/api/blogs')
+                .send(blogWithNoUrlAndTitle)
+                .expect(400);
     })
 
 })

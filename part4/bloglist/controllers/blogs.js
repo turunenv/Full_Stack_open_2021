@@ -12,7 +12,13 @@ blogRouter.get('/', async (request, response) => {
     // check if likes-property was set in the request, default to 0 if not
     if (!params.likes) {
       params["likes"] = 0;
-    }
+    };
+
+    // respond with HTTP 400 Bad Request when title and url are missing
+    if (!params.title && !params.url) {
+      response.status(400).end();
+    };
+    
     const blog = new Blog(request.body)
   
     const savedBlog = await blog.save();
