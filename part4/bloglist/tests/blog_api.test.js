@@ -78,3 +78,23 @@ describe('adding a new blog', () => {
     })
 
 })
+
+test('deleting a blog based on id', async() => {
+    const initialBlogs = await helper.blogsInDb();
+    const idToDelete = initialBlogs[0].id;
+    console.log(idToDelete);
+
+    await api
+            .delete(`/api/blogs/${idToDelete}`)
+            .expect(204);
+
+    const notesAfterDeleting = await helper.blogsInDb();
+    
+    //does the database contain one less entry after deleting one?
+    expect(notesAfterDeleting).toHaveLength(helper.initialBlogs.length - 1);
+    
+    //is the deleted blog-id correctly not in the database anymore?
+    const ids = notesAfterDeleting.map(note => note.id);
+    expect(ids).not.toContain(idToDelete); 
+
+})
