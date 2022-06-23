@@ -7,6 +7,12 @@ blogRouter.get('/', async (request, response) => {
   })
   
   blogRouter.post('/', async (request, response) => {
+    const params = request.body;
+
+    // check if likes-property was set in the request, default to 0 if not
+    if (!params.likes) {
+      params["likes"] = 0;
+    }
     const blog = new Blog(request.body)
   
     const savedBlog = await blog.save();

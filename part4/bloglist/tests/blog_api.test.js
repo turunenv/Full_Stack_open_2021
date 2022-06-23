@@ -28,23 +28,41 @@ test('all blogs have the id property', async() => {
     response.body.forEach(blog => expect(blog.id).toBeDefined());
 });
 
-test('POST to /api/blogs successfully saves the new blog to the database', async() => {
-    const newBlog = {
-        title: "grinding HTML",
-        author: "Veku Turunen",
-        url: "mokkilife.fi",
-        likes: 999,
-    };
+describe('adding a new blog', () => {
+    test('blog in the correct format is saved to the database', async() => {
+        const newBlog = {
+            title: "grinding HTML",
+            author: "Veku Turunen",
+            url: "mokkilife.fi",
+            likes: 999,
+        };
+    
+        await api
+                .post('/api/blogs')
+                .send(newBlog)
+                .expect(201)
+                .expect('Content-Type', /application\/json/)
+    
+        const blogsAfterPosting = await helper.blogsInDb();
+        expect(blogsAfterPosting).toHaveLength(helper.initialBlogs.length + 1);
+    
+        const blogTitles = blogsAfterPosting.map(blog => blog.title);
+        expect(blogTitles).toContain("grinding HTML");
+    });
 
-    await api
-            .post('/api/blogs')
-            .send(newBlog)
-            .expect(201)
-            .expect('Content-Type', /application\/json/)
+    test('likes-property defaults to 0 when missing', async() => {
+        const blogWithNoLikes = {
+            title: "Cpp",
+            author: "Bjarne Stroustrup",
+            url: "cpp.com",
+        }
 
-    const blogsAfterPosting = await helper.blogsInDb();
-    expect(blogsAfterPosting).toHaveLength(helper.initialBlogs.length + 1);
+        const response = await api
+                            .post('/api/blogs')
+                            .send(blogWithNoLikes)
+                            .expect(201)
+                            .expect('Content-Type', /application\/json/);
+        expect(response.body.likes).toBe(0);
+    })
 
-    const blogTitles = blogsAfterPosting.map(blog => blog.title);
-    expect(blogTitles).toContain("grinding HTML");
 })
