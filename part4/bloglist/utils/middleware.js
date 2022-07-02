@@ -27,9 +27,20 @@ const errorHandler = (error, request, response, next) => {
     }
 
     next(error);
+};
+
+const tokenExtractor = (request, response, next) => {
+    //get token from Authorization header of the request and add it as an attribute to the request object
+    const authorization = request.get('authorization');
+
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        request.token = authorization.substring(7);
+    }
+    next();
 }
 
 module.exports = {
     requestLogger,
-    errorHandler
+    errorHandler,
+    tokenExtractor,
 }
