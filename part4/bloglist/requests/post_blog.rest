@@ -1,9 +1,0 @@
-POST http://localhost:3003/api/blogs
-content-type: application/json
-
-{
-    "title": "python basics",
-    "author": "Veku Turunen",
-    "url": "https://awesomeblog.com/python",
-    "likes": 10000
-}
