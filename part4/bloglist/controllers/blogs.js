@@ -1,8 +1,6 @@
 const blogRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-
 
 blogRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', '-blogs');
@@ -12,16 +10,15 @@ blogRouter.get('/', async (request, response) => {
 blogRouter.post('/', async (request, response) => {
     const params = request.body;
 
-    //check if valid jwt-token was sent with the request
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    const user = request.user;
 
-    if (!decodedToken.id) {
+    if (!user) {
       return response.status(401).json({ error: 'token missing or invalid' });
     }
 
     // check if likes-property was set in the request, default to 0 if not
     if (!params.likes) {
-      params["likes"] = 0;
+      params.likes = 0;
     };
 
     // respond with HTTP 400 Bad Request when title and url are missing
@@ -29,16 +26,16 @@ blogRouter.post('/', async (request, response) => {
        return response.status(400).end();
     };
 
-    const blog = new Blog(request.body)
-
-    const user = await User.findById(decodedToken.id); 
-    blog.user = user._id;
+    const blog = new Blog(params);
+    
+    const userFromDb = await User.findById(user.id); 
+    blog.user = userFromDb._id;
   
     const savedBlog = await blog.save();
 
     // save the id of the blog to the user
-    user.blogs = user.blogs.concat(savedBlog._id);
-    await user.save();
+    userFromDb.blogs = userFromDb.blogs.concat(savedBlog._id);
+    await userFromDb.save();
 
     response.status(201).json(savedBlog);
 
@@ -46,9 +43,9 @@ blogRouter.post('/', async (request, response) => {
 
 blogRouter.delete('/:id', async(request, response) => {
     const blogToDelete = await Blog.findById(request.params.id);
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    const user = request.user;
 
-    if (!decodedToken.id) {
+    if (!user) {
       return response.status(401).json({ error: 'missing or invalid token' });
     };
 
@@ -58,7 +55,7 @@ blogRouter.delete('/:id', async(request, response) => {
     }
 
     // check if user id from token and the id of the user that created the blog are the same
-    if (!(decodedToken.id === blogToDelete.user.toString())) {
+    if (!(user.id === blogToDelete.user.toString())) {
       return response.status(401).json({ error: 'unauthorized action' });
     };
 
