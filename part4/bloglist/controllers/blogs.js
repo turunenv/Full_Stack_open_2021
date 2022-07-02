@@ -45,6 +45,24 @@ blogRouter.post('/', async (request, response) => {
   })
 
 blogRouter.delete('/:id', async(request, response) => {
+    const blogToDelete = await Blog.findById(request.params.id);
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'missing or invalid token' });
+    };
+
+    // did the blog exist in the database?
+    if (!blogToDelete) {
+      return response.status(404).json({ error: 'resource does not exist' });
+    }
+
+    // check if user id from token and the id of the user that created the blog are the same
+    if (!(decodedToken.id === blogToDelete.user.toString())) {
+      return response.status(401).json({ error: 'unauthorized action' });
+    };
+
+    console.log(`action authorized, preparing to remove blog ${blogToDelete._id}`)
     await Blog.findByIdAndRemove(request.params.id);
     response.status(204).end();
   });
