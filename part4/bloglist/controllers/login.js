@@ -7,12 +7,8 @@ loginRouter.post('/', async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.findOne({ username });
-
-    console.log(username, password)
     
-    console.log('user is', user);
     const loginSuccess = user && await bcrypt.compare(password, user.passwordHash);
-    console.log('loginSuccess is', loginSuccess)
 
     if (!loginSuccess) {
         // login failed (user not existing or wrong password) - return HTTP 401 Unauthorized
