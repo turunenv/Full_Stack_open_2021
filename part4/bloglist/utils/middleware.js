@@ -12,8 +12,7 @@ const requestLogger = (req, res, next) => {
 
 const errorHandler = (error, request, response, next) => {
     logger.error(error.message);
-    console.log("ARE WE IN THE ERROR HANDLER?? -- error.name:", error.name)
-
+    
     if (error.name === 'CastError') {
         return response.status(400).send({
           error: 'malformatted id'
@@ -26,7 +25,11 @@ const errorHandler = (error, request, response, next) => {
         return response.status(401).json({
           error: 'invalid token'
         })
-    }
+      } else if (error.name === 'JsonWebTokenError') {
+        return response.status(401).json({
+          error: 'token expired'
+        })
+      }
 
     next(error);
 };
