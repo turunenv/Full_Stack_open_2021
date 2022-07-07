@@ -1,0 +1,11 @@
+.loggedInUser {
+    margin: 10px 0px;
+}
+
+form>div {
+    margin: 4px;
+}
+
+form>div>label {
+    margin-right: 4px;
+}
