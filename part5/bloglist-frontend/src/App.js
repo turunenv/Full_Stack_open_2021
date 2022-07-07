@@ -16,6 +16,16 @@ const App = () => {
     )  
   }, [])
 
+  //login to persist when refreshing the page by checking if user is set in the local storage
+  useEffect(() => {
+    console.log('useEffect fired: checking if user-JSON has been set in the window.localStorage');
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+    }
+  }, [])
+
   const handleLogin = async event => {
     event.preventDefault()
     
@@ -24,14 +34,25 @@ const App = () => {
         username,
         password,
       })
-      console.log(user)
+      
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+
       setUser(user)
       setPassword('')
       setUsername('')
-    } catch (error) {
-        console.log(error)
+    } catch (exception) {
+        console.log(exception)
     }
   }
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+  }
+
+  console.log('user is', user)
 
   //render login-form if user is not logged in
   if (user === null) {
@@ -53,7 +74,10 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <div className='loggedInUser'>{user.name} logged in</div>
+      <div className='loggedInUser'>{user.name} 
+        logged in
+        <button onClick={handleLogout}>Logout</button>
+      </div>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
