@@ -9,3 +9,11 @@ form>div {
 form>div>label {
     margin-right: 4px;
 }
+
+input[type=text] {
+    display: block;
+}
+
+.blogForm {
+    margin: 4px;
+}

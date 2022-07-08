@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -15,7 +16,7 @@ const App = () => {
       setBlogs( blogs )
     )  
   }, [])
-
+  
   //login to persist when refreshing the page by checking if user is set in the local storage
   useEffect(() => {
     console.log('useEffect fired: checking if user-JSON has been set in the window.localStorage');
@@ -23,6 +24,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -39,6 +41,7 @@ const App = () => {
         'loggedBlogappUser', JSON.stringify(user)
       )
 
+      blogService.setToken(user.token)
       setUser(user)
       setPassword('')
       setUsername('')
@@ -74,10 +77,14 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <div className='loggedInUser'>{user.name} 
-        logged in
+      <div className='loggedInUser'>{user.name + " logged in "} 
+  
         <button onClick={handleLogout}>Logout</button>
       </div>
+
+      <h2>Create a new blog</h2>
+      <BlogForm createBlog={blogService.create}/>
+
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
