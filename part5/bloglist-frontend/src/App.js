@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
+
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -73,6 +76,14 @@ const App = () => {
     setUser(null)
   }
 
+  const addBlog = async(blogObj) => {
+    const addedBlog = await blogService.create(blogObj)
+    //update the blog state-array
+    setBlogs(blogs.concat(addedBlog))
+    //set success message
+    setNotification(`a new blog ${addedBlog.title} by ${addedBlog.author} added`, 'message successMessage')
+  }
+
   //render login-form if user is not logged in
   if (user === null) {
     return (
@@ -98,7 +109,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h1>Blogs</h1>
 
       <Notification 
           message={message}
@@ -110,8 +121,12 @@ const App = () => {
         <button onClick={handleLogout}>Logout</button>
       </div>
 
-      <h2>Create a new blog</h2>
-      <BlogForm createBlog={blogService.create} setNotification={setNotification} setBlogs={setBlogs} blogs={blogs}/>
+      <Togglable buttonLabel='new blog'>
+        <h2>Create a new blog</h2>
+        <BlogForm 
+          createBlog={addBlog} 
+        />
+      </Togglable>
 
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
