@@ -17,3 +17,23 @@ input[type=text] {
 .blogForm {
     margin: 4px;
 }
+
+.message {
+    margin: 4px;
+    padding: 10px;
+    border: 2px solid;
+    border-radius: 3px;
+    font-size: 30;
+    width: 20%;
+    background-color: #cfcfcf;
+}
+
+.errorMessage {
+    border-color: red;
+    color: red;
+}
+
+.successMessage {
+    border-color: green;
+    color: green;
+}
