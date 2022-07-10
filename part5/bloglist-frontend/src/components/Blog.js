@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [showAllInfo, setShowAllInfo] = useState(false)
 
   const blogStyle = {
@@ -14,6 +14,14 @@ const Blog = ({ blog }) => {
     setShowAllInfo(!showAllInfo)
   }
 
+  const increaseLikesByOne = () => {
+    const updatedBlog = { ...blog,
+                          user: blog.user.id,
+                          likes: blog.likes + 1 }
+
+    updateBlog(blog.id, updatedBlog)
+  }
+
   const buttonText = showAllInfo ? 'hide' : 'view'
 
   if (showAllInfo) {
@@ -24,7 +32,7 @@ const Blog = ({ blog }) => {
         </div>
         <div>{blog.url}</div>
         <div>likes {blog.likes}
-           <button>like</button>
+           <button onClick={increaseLikesByOne}>like</button>
         </div>
         <div>{blog.user.name}</div>
       </div>

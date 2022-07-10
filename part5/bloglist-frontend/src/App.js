@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 
-import Blog from './components/Blog'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -90,6 +89,13 @@ const App = () => {
     setNotification(`a new blog ${addedBlog.title} by ${addedBlog.author} added`, 'success')
   }
 
+  const updateBlog = async(id, newBlog) => {
+    const updatedBlog = await blogService.update(id, newBlog)
+
+    //update the blog state-array
+    setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog))
+  }
+
   //render login-form if user is not logged in
   if (user === null) {
     return (
@@ -133,7 +139,7 @@ const App = () => {
         />
       </Togglable>
 
-      <BlogList blogs={blogs} />
+      <BlogList blogs={blogs} updateBlog={updateBlog}/>
     </div>
   )
 }
