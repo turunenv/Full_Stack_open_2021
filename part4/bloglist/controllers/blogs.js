@@ -77,7 +77,7 @@ blogRouter.put('/:id', middleware.userExtractor, async(request, response) => {
       user: body.user,
     };
 
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true});
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true}).populate('user', '-blogs');
     response.json(updatedBlog);
   })
 
