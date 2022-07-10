@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 import Blog from './components/Blog'
+import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
@@ -15,7 +16,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
-  const [messageClass, setMessageClass] = useState('')
+  const [messageStyle, setMessageStyle] = useState('')
 
   const blogFormRef = useRef()
 
@@ -37,13 +38,13 @@ const App = () => {
   }, [])
 
   //function to set a notification for 3 seconds
-  const setNotification = (newMessage, newMessageClass) => {
+  const setNotification = (newMessage, newMessageStyle) => {
     setMessage(newMessage)
-    setMessageClass(newMessageClass)
+    setMessageStyle(newMessageStyle)
 
     setTimeout(() => {
       setMessage(null)
-      setMessageClass('')
+      setMessageStyle('')
     }, 3000)
   }
 
@@ -67,7 +68,7 @@ const App = () => {
 
       
     } catch (exception) {
-        setNotification('wrong username or password', 'message errorMessage')
+        setNotification('wrong username or password', 'error')
         console.log(exception)
     }
   }
@@ -86,7 +87,7 @@ const App = () => {
     //update the blog state-array
     setBlogs(blogs.concat(addedBlog))
     //set success message
-    setNotification(`a new blog ${addedBlog.title} by ${addedBlog.author} added`, 'message successMessage')
+    setNotification(`a new blog ${addedBlog.title} by ${addedBlog.author} added`, 'success')
   }
 
   //render login-form if user is not logged in
@@ -97,7 +98,7 @@ const App = () => {
 
         <Notification 
           message={message}
-          className={messageClass}
+          style={messageStyle}
         />
 
         <LoginForm 
@@ -118,11 +119,10 @@ const App = () => {
 
       <Notification 
           message={message}
-          className={messageClass}
+          style={messageStyle}
         />
 
-      <div className='loggedInUser'>{user.name + " logged in "} 
-  
+      <div>{user.name + " logged in "} 
         <button onClick={handleLogout}>Logout</button>
       </div>
 
@@ -133,9 +133,7 @@ const App = () => {
         />
       </Togglable>
 
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      <BlogList blogs={blogs} />
     </div>
   )
 }
