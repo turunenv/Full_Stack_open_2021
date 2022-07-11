@@ -31,13 +31,22 @@ const update = async(id, updatedBlog) => {
   }
   const response = await axios.put(`${baseUrl}/${id}`, updatedBlog, config)
   return response.data
-  
+}
+
+const deleteBlog = async(id) => {
+  const config = {
+    headers: {
+      Authorization: token,
+    }
+  }
+ await axios.delete(`${baseUrl}/${id}`, config)
 }
 
 const blogService = { 
                       getAll,
                       create,
                       update,
+                      deleteBlog,
                       setToken,
                     }
 

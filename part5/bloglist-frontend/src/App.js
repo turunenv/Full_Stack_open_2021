@@ -96,6 +96,18 @@ const App = () => {
     setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog))
   }
 
+  const deleteBlog = async id => {
+    try {
+      const blogToDelete = blogs.find(blog => blog.id === id)
+      if (window.confirm(`Delete ${blogToDelete.title} by ${blogToDelete.author}?`)) {
+        await blogService.deleteBlog(id)
+        setBlogs(blogs.filter(blog => blog.id !== id))
+      } 
+  } catch(exception) {
+      setNotification(exception.response.statusText,'error')
+  }
+  }
+
   //render login-form if user is not logged in
   if (user === null) {
     return (
@@ -139,7 +151,7 @@ const App = () => {
         />
       </Togglable>
 
-      <BlogList blogs={blogs} updateBlog={updateBlog}/>
+      <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog}/>
     </div>
   )
 }

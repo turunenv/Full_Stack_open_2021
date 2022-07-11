@@ -1,6 +1,6 @@
 import Blog from './Blog'
 
-const BlogList = ({ blogs, updateBlog }) => {
+const BlogList = ({ blogs, updateBlog, deleteBlog }) => {
     const blogListStyle = {
         marginTop: 10,
     }
@@ -10,7 +10,11 @@ const BlogList = ({ blogs, updateBlog }) => {
     return (
         <div style={blogListStyle}>
             {blogs.map(blog => {
-                return <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+                return <Blog key={blog.id} 
+                             blog={blog} 
+                             updateBlog={updateBlog}
+                             deleteBlog={deleteBlog}
+                        />
             })}
         </div>
     )
