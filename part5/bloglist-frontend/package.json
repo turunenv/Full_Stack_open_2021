@@ -19,6 +19,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "eslint-plugin-jest": "^26.5.3",
     "react-scripts": "5.0.1"
   },
   "eslintConfig": {
