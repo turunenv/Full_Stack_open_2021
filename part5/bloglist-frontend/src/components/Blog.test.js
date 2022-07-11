@@ -1,22 +1,23 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-test('renders title and author, but not url and likes by default', () => {
-  const blog = {
-    author: 'Verneri Turunen',
-    id: '123123123123',
-    likes: 15,
-    title: 'The Wonders of CSS',
-    url: 'css-land.com',
-    user: {
-      id: '456456456',
-      name: 'Verneri Turunen',
-      username: 'Veku'
-    }
+const blog = {
+  author: 'Verneri Turunen',
+  id: '123123123123',
+  likes: 15,
+  title: 'The Wonders of CSS',
+  url: 'css-land.com',
+  user: {
+    id: '456456456',
+    name: 'Verneri Turunen',
+    username: 'Veku'
   }
+}
 
+test('renders title and author, but not url and likes by default', () => {
   render(<Blog blog={blog} />)
 
   //check that title and author are rendered on screen
@@ -32,4 +33,17 @@ test('renders title and author, but not url and likes by default', () => {
 
   const likesElem = screen.queryByText('likes', { exact:false })
   expect(likesElem).toBe(null)
+})
+
+test('renders url and likes after user clicks the view-button', async() => {
+  render(<Blog blog={blog} />)
+
+  const user = userEvent.setup()
+  const button = screen.getByText('view')
+  await user.click(button)
+
+  //are url and likes rendered?
+  //getByText throws an error if element not found -> no need to use expect
+  screen.getByText('likes 15')
+  screen.getByText('css-land.com')
 })
