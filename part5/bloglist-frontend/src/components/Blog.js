@@ -16,8 +16,8 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
 
   const increaseLikesByOne = () => {
     const updatedBlog = { ...blog,
-                          user: blog.user.id,
-                          likes: blog.likes + 1 }
+      user: blog.user.id,
+      likes: blog.likes + 1 }
 
     updateBlog(blog.id, updatedBlog)
   }
@@ -28,11 +28,11 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     return (
       <div style={blogStyle}>
         <div>{blog.title} {blog.author}
-           <button onClick={toggleShowAllInfo}>{buttonText}</button>
+          <button onClick={toggleShowAllInfo}>{buttonText}</button>
         </div>
         <div>{blog.url}</div>
         <div>likes {blog.likes}
-           <button onClick={increaseLikesByOne}>like</button>
+          <button onClick={increaseLikesByOne}>like</button>
         </div>
         <div>{blog.user.name}</div>
         <button onClick={() => deleteBlog(blog.id)}>remove</button>
@@ -43,7 +43,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   return (
     <div style={blogStyle}>
       <div>{blog.title} {blog.author}
-      <button onClick={toggleShowAllInfo}>{buttonText}</button></div>
+        <button onClick={toggleShowAllInfo}>{buttonText}</button></div>
     </div>
   )
 }

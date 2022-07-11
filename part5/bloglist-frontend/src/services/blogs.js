@@ -18,7 +18,7 @@ const create = async newBlog => {
       Authorization: token
     }
   }
-  
+
   const response = await axios.post(baseUrl, newBlog, config)
   return response.data
 }
@@ -39,15 +39,15 @@ const deleteBlog = async(id) => {
       Authorization: token,
     }
   }
- await axios.delete(`${baseUrl}/${id}`, config)
+  await axios.delete(`${baseUrl}/${id}`, config)
 }
 
-const blogService = { 
-                      getAll,
-                      create,
-                      update,
-                      deleteBlog,
-                      setToken,
-                    }
+const blogService = {
+  getAll,
+  create,
+  update,
+  deleteBlog,
+  setToken,
+}
 
 export default blogService

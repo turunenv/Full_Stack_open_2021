@@ -22,12 +22,12 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
-  
+
   //login to persist when refreshing the page by checking if user is set in the local storage
   useEffect(() => {
-    console.log('useEffect fired: checking if user-JSON has been set in the window.localStorage');
+    console.log('useEffect fired: checking if user-JSON has been set in the window.localStorage')
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -49,13 +49,13 @@ const App = () => {
 
   const handleLogin = async event => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username,
         password,
       })
-      
+
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
@@ -65,10 +65,10 @@ const App = () => {
       setPassword('')
       setUsername('')
 
-      
+
     } catch (exception) {
-        setNotification('wrong username or password', 'error')
-        console.log(exception)
+      setNotification('wrong username or password', 'error')
+      console.log(exception)
     }
   }
 
@@ -102,10 +102,10 @@ const App = () => {
       if (window.confirm(`Delete ${blogToDelete.title} by ${blogToDelete.author}?`)) {
         await blogService.deleteBlog(id)
         setBlogs(blogs.filter(blog => blog.id !== id))
-      } 
-  } catch(exception) {
+      }
+    } catch(exception) {
       setNotification(exception.response.statusText,'error')
-  }
+    }
   }
 
   //render login-form if user is not logged in
@@ -114,12 +114,12 @@ const App = () => {
       <>
         <h2>Login to the application</h2>
 
-        <Notification 
+        <Notification
           message={message}
           style={messageStyle}
         />
 
-        <LoginForm 
+        <LoginForm
           username={username}
           setUsername={setUsername}
           password={password}
@@ -127,7 +127,7 @@ const App = () => {
           handleLogin={handleLogin}
         />
       </>
-      
+
     )
   }
 
@@ -135,19 +135,19 @@ const App = () => {
     <div>
       <h1>Blogs</h1>
 
-      <Notification 
-          message={message}
-          style={messageStyle}
-        />
+      <Notification
+        message={message}
+        style={messageStyle}
+      />
 
-      <div>{user.name + " logged in "} 
+      <div>{user.name + ' logged in '}
         <button onClick={handleLogout}>Logout</button>
       </div>
 
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <h2>Create a new blog</h2>
-        <BlogForm 
-          createBlog={addBlog} 
+        <BlogForm
+          createBlog={addBlog}
         />
       </Togglable>
 
