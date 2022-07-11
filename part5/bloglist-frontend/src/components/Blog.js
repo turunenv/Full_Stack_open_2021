@@ -7,7 +7,12 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     paddingTop: 10,
     paddingLeft: 2,
     border: '2px solid black',
-    marginBottom: 5
+    marginBottom: 5,
+    listStyleType: 'none'
+  }
+
+  const blogInfoStyle = {
+    marginRight: 3,
   }
 
   const toggleShowAllInfo = () => {
@@ -26,25 +31,29 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
 
   if (showAllInfo) {
     return (
-      <div style={blogStyle}>
-        <div>{blog.title} {blog.author}
+      <li style={blogStyle}>
+        <div>
+          <span style={blogInfoStyle}>{blog.title}</span>
+          <span style={blogInfoStyle}>{blog.author}</span>
           <button onClick={toggleShowAllInfo}>{buttonText}</button>
         </div>
         <div>{blog.url}</div>
-        <div>likes {blog.likes}
+        <div>
+          <span style={blogInfoStyle}>likes {blog.likes}</span>
           <button onClick={increaseLikesByOne}>like</button>
         </div>
         <div>{blog.user.name}</div>
         <button onClick={() => deleteBlog(blog.id)}>remove</button>
-      </div>
+      </li>
     )
   }
 
   return (
-    <div style={blogStyle}>
-      <div>{blog.title} {blog.author}
-        <button onClick={toggleShowAllInfo}>{buttonText}</button></div>
-    </div>
+    <li style={blogStyle}>
+      <span style={blogInfoStyle}>{blog.title}</span>
+      <span style={blogInfoStyle}>{blog.author}</span>
+      <button onClick={toggleShowAllInfo}>{buttonText}</button>
+    </li>
   )
 }
 

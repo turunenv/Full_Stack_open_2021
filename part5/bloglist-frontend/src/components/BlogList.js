@@ -5,12 +5,13 @@ import Blog from './Blog'
 const BlogList = ({ blogs, updateBlog, deleteBlog }) => {
   const blogListStyle = {
     marginTop: 10,
+    padding: 0
   }
   // sort the blogs by the number of likes in descending order
   const sortedBlogs = [...blogs].sort((blog1, blog2) => blog2.likes - blog1.likes)
 
   return (
-    <div style={blogListStyle}>
+    <ul style={blogListStyle}>
       {sortedBlogs.map(blog => {
         return <Blog key={blog.id}
           blog={blog}
@@ -18,7 +19,7 @@ const BlogList = ({ blogs, updateBlog, deleteBlog }) => {
           deleteBlog={deleteBlog}
         />
       })}
-    </div>
+    </ul>
   )
 }
 
