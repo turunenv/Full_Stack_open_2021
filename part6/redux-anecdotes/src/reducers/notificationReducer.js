@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = 'Test Message'
 
-const notificationReducer = createSlice({
+const notificationSlice = createSlice({
     name: 'notification',
     initialState,
     reducers: {
@@ -11,3 +11,5 @@ const notificationReducer = createSlice({
         }
     }
 })
+
+export default notificationSlice.reducer
