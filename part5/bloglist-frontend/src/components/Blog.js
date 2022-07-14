@@ -49,7 +49,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   }
 
   return (
-    <li style={blogStyle}>
+    <li style={blogStyle} className='blog'>
       <span style={blogInfoStyle}>{blog.title}</span>
       <span style={blogInfoStyle}>{blog.author}</span>
       <button onClick={toggleShowAllInfo}>{buttonText}</button>
