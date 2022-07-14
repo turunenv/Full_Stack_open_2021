@@ -81,7 +81,7 @@ describe('Blog app', function() {
           cy.addBlog(blog)
         })
 
-        it.only('a user can like a blog', function() {
+        it('a user can like a blog', function() {
             //click open the full blog details
             cy.contains('view').click()
 
@@ -93,6 +93,18 @@ describe('Blog app', function() {
             //check that likes is 1 after clicking the like-button
             cy.contains('span', 'likes 1')
 
+        })
+
+        it.only('user who created the blog can delete it', function() {
+            cy.contains('view').click()
+
+            //click the remove button
+            //cypress auto-accepts confirmations -> no need to click the window.confirm dialog
+            cy.contains('remove').click()
+
+            //check that the blog has been removed
+            cy.get('html').should('not.contain', 'FullStack fun')
+            cy.get('html').should('not.contain', 'Dan Abramov')
         })
         
     })
