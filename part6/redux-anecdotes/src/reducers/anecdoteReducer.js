@@ -35,5 +35,12 @@ export const createAnecdote = (content) => {
   }
 }
 
+export const voteAnecdote = (obj) => {
+  return async dispatch => {
+    const updatedAnecdote = await anecdoteService.vote(obj)
+    dispatch(addVote(updatedAnecdote.id))
+  }
+}
+
 export const { addVote, appendAnecdote, setAnecdotes } = anecdoteSlice.actions
 export default anecdoteSlice.reducer

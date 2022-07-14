@@ -17,9 +17,20 @@ const createNew = async (content) => {
     return response.data
 }
 
+const vote = async obj => {
+    //increase votes of the anecdote object by one
+    const updatedObj = {
+        ...obj,
+        votes: obj.votes + 1,
+    }
+    const response = await axios.put(`${baseUrl}/${obj.id}`, updatedObj)
+    return response.data
+}
+
 const services = {
     getAll,
     createNew,
+    vote
 }
 
 export default services
