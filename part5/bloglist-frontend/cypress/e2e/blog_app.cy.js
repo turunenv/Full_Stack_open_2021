@@ -54,7 +54,7 @@ describe('Blog app', function() {
       cy.login({ username: 'UZain', password: 'fastman' })
     })
 
-    it.only('A new blog can be created', function() {
+    it('A new blog can be created', function() {
       cy.contains('new blog').click()
 
       //fill the form 
@@ -68,6 +68,33 @@ describe('Blog app', function() {
       //check that span-elements with title and author can be found
       cy.contains('span', 'CSS selectors')
       cy.contains('span', 'Usain')
+    })
+
+    describe('When a blog has been created', function() {
+        //add a default blog before each test in this block
+        beforeEach(function() {
+          const blog = {
+            title: 'FullStack fun',
+            author: 'Dan Abramov',
+            url: "fb.com",
+          }
+          cy.addBlog(blog)
+        })
+
+        it.only('a user can like a blog', function() {
+            //click open the full blog details
+            cy.contains('view').click()
+
+            //make sure that likes is initially 0
+            cy.contains('span', 'likes 0')
+
+            cy.contains('button', 'like').click()
+
+            //check that likes is 1 after clicking the like-button
+            cy.contains('span', 'likes 1')
+
+        })
+        
     })
   })
 })
