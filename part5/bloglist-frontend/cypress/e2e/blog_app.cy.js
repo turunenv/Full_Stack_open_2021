@@ -107,7 +107,7 @@ describe('Blog app', function() {
             cy.get('html').should('not.contain', 'Dan Abramov')
         })
 
-        it.only('blogs sorted based on likes in descending order', function() {
+        it('blogs sorted based on likes in descending order', function() {
             //create two more blogs
             const blog2 = {
               title: 'second most likes',
