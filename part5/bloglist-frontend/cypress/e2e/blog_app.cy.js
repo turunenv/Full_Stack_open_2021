@@ -95,7 +95,7 @@ describe('Blog app', function() {
 
         })
 
-        it.only('user who created the blog can delete it', function() {
+        it('user who created the blog can delete it', function() {
             cy.contains('view').click()
 
             //click the remove button
@@ -105,6 +105,39 @@ describe('Blog app', function() {
             //check that the blog has been removed
             cy.get('html').should('not.contain', 'FullStack fun')
             cy.get('html').should('not.contain', 'Dan Abramov')
+        })
+
+        it.only('blogs sorted based on likes in descending order', function() {
+            //create two more blogs
+            const blog2 = {
+              title: 'second most likes',
+              author: 'Luukkainen',
+              url: 'there.com',
+            }
+            const blog3 = {
+              title: 'title with most likes',
+              author: 'Luukkainen',
+              url: 'there.com',  
+            }
+
+            cy.addBlog(blog2)
+            cy.addBlog(blog3)
+
+            //make sure blogs were added
+            cy.contains('second most likes')
+            cy.contains('title with most likes')
+
+            //like blog 'most likes' 3 times
+            cy.likeBlog('title with most likes', 3)
+
+            //like blog 'second most likes 2 times
+            cy.likeBlog('second most likes', 2)
+
+            //check that blogs are in correct order
+            cy.get('.blog').eq(0).should('contain', 'title with most likes')
+            cy.get('.blog').eq(1).should('contain', 'second most likes')
+            cy.get('.blog').eq(2).should('contain', 'FullStack fun')
+
         })
         
     })
