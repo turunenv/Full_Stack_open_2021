@@ -48,4 +48,26 @@ describe('Blog app', function() {
       cy.contains('wrong username or password')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'UZain', password: 'fastman' })
+    })
+
+    it.only('A new blog can be created', function() {
+      cy.contains('new blog').click()
+
+      //fill the form 
+      cy.get('#title').type('CSS selectors')
+      cy.get('#author').type('Usain')
+      cy.get('#url').type('www.usain-css.com')
+
+      //click the create-button
+      cy.contains('create').click()
+
+      //check that span-elements with title and author can be found
+      cy.contains('span', 'CSS selectors')
+      cy.contains('span', 'Usain')
+    })
+  })
 })
