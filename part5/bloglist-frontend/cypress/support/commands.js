@@ -50,3 +50,23 @@ Cypress.Commands.add('addBlog', ({ title, author, url}) => {
 
   cy.visit('http://localhost:3000')
 })
+
+//like a certain blog n times based on blog title
+//make sure likes were increased before liking again
+//assumes that likes are 0 at the beginning
+Cypress.Commands.add('likeBlog', function(title, n) {
+  //initial likes
+  let likes = 0
+
+  //find view button that is a sibling of <span> with the title and click it
+  cy.contains(title).siblings('button').click()
+
+  //click the like button n times, make sure the new like-amount has been
+  //rendered before clicking again
+  for (let i = 1; i <= n; i++) {
+    cy.contains('button', 'like').click()
+    cy.contains('span', `likes ${i}`)
+  }
+  //make sure to click hide to make sure only 1 like button is available at a time
+  cy.contains('hide').click()
+})
