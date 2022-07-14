@@ -31,7 +31,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
 
   if (showAllInfo) {
     return (
-      <li style={blogStyle}>
+      <li style={blogStyle} className='blog'>
         <div>
           <span style={blogInfoStyle}>{blog.title}</span>
           <span style={blogInfoStyle}>{blog.author}</span>
