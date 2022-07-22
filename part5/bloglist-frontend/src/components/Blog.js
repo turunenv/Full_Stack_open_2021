@@ -1,7 +1,11 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { deleteBlog, addLike } from "../reducers/blogSlice";
 
-const Blog = ({ blog, updateBlog, deleteBlog }) => {
+const Blog = ({ blog }) => {
   const [showAllInfo, setShowAllInfo] = useState(false);
+
+  const dispatch = useDispatch();
 
   const blogStyle = {
     paddingTop: 10,
@@ -15,14 +19,14 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     marginRight: 3,
   };
 
+  const removeBlog = () => {
+    if (window.confirm(`are you sure you want to remove '${blog.title}' by ${blog.author}?`)) {
+      dispatch(deleteBlog(blog.id));
+    }
+  }
+
   const toggleShowAllInfo = () => {
     setShowAllInfo(!showAllInfo);
-  };
-
-  const increaseLikesByOne = () => {
-    const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 };
-
-    updateBlog(blog.id, updatedBlog);
   };
 
   const buttonText = showAllInfo ? "hide" : "view";
@@ -38,10 +42,10 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
         <div>{blog.url}</div>
         <div>
           <span style={blogInfoStyle}>likes {blog.likes}</span>
-          <button onClick={increaseLikesByOne}>like</button>
+          <button onClick={() => dispatch(addLike(blog.id))}>like</button>
         </div>
         <div>{blog.user.name}</div>
-        <button onClick={() => deleteBlog(blog.id)}>remove</button>
+        <button onClick={removeBlog}>remove</button>
       </li>
     );
   }

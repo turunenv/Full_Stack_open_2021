@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 import Blog from "./Blog";
 
-const BlogList = ({ blogs, updateBlog, deleteBlog }) => {
+const BlogList = () => {
+  const blogs = useSelector(state => state.blogs);
   const blogListStyle = {
     marginTop: 10,
     padding: 0,
@@ -19,8 +21,6 @@ const BlogList = ({ blogs, updateBlog, deleteBlog }) => {
           <Blog
             key={blog.id}
             blog={blog}
-            updateBlog={updateBlog}
-            deleteBlog={deleteBlog}
           />
         );
       })}

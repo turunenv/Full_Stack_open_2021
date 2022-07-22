@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogSlice";
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = ({ toggle }) => {
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -18,7 +22,9 @@ const BlogForm = ({ createBlog }) => {
       url,
     };
 
-    createBlog(newBlog);
+    dispatch(createBlog(newBlog));
+    //close the form after user submits
+    toggle();
     setTitle("");
     setAuthor("");
     setUrl("");
