@@ -12,15 +12,18 @@ const LoginForm = (props) => (
     </div>
     <div>
       <label htmlFor="Password">password</label>
-      <input type="text"
+      <input
+        type="text"
         value={props.password}
         name="Password"
         id="Password"
         onChange={(event) => props.setPassword(event.target.value)}
       />
     </div>
-    <button type="submit" className="login-button">login</button>
+    <button type="submit" className="login-button">
+      login
+    </button>
   </form>
-)
+);
 
-export default LoginForm
+export default LoginForm;

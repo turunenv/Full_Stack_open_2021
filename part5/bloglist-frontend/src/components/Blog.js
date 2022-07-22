@@ -1,37 +1,35 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 const Blog = ({ blog, updateBlog, deleteBlog }) => {
-  const [showAllInfo, setShowAllInfo] = useState(false)
+  const [showAllInfo, setShowAllInfo] = useState(false);
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: '2px solid black',
+    border: "2px solid black",
     marginBottom: 5,
-    listStyleType: 'none'
-  }
+    listStyleType: "none",
+  };
 
   const blogInfoStyle = {
     marginRight: 3,
-  }
+  };
 
   const toggleShowAllInfo = () => {
-    setShowAllInfo(!showAllInfo)
-  }
+    setShowAllInfo(!showAllInfo);
+  };
 
   const increaseLikesByOne = () => {
-    const updatedBlog = { ...blog,
-      user: blog.user.id,
-      likes: blog.likes + 1 }
+    const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 };
 
-    updateBlog(blog.id, updatedBlog)
-  }
+    updateBlog(blog.id, updatedBlog);
+  };
 
-  const buttonText = showAllInfo ? 'hide' : 'view'
+  const buttonText = showAllInfo ? "hide" : "view";
 
   if (showAllInfo) {
     return (
-      <li style={blogStyle} className='blog'>
+      <li style={blogStyle} className="blog">
         <div>
           <span style={blogInfoStyle}>{blog.title}</span>
           <span style={blogInfoStyle}>{blog.author}</span>
@@ -45,16 +43,16 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
         <div>{blog.user.name}</div>
         <button onClick={() => deleteBlog(blog.id)}>remove</button>
       </li>
-    )
+    );
   }
 
   return (
-    <li style={blogStyle} className='blog'>
+    <li style={blogStyle} className="blog">
       <span style={blogInfoStyle}>{blog.title}</span>
       <span style={blogInfoStyle}>{blog.author}</span>
       <button onClick={toggleShowAllInfo}>{buttonText}</button>
     </li>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;
