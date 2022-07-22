@@ -1,5 +1,10 @@
-const Notification = ({ message, style }) => {
-  let notificationStyle;
+import { useSelector } from "react-redux";
+
+const Notification = () => {
+  const notification = useSelector(state => state.notification)
+  const { message, style } = notification;
+
+  let notificationStyle = { display: "none" };
 
   const errorMessageStyle = {
     color: "red",

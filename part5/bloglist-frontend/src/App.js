@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+
+import { setNotification } from "./reducers/notificationSlice";
 
 import BlogList from "./components/BlogList";
 import LoginForm from "./components/LoginForm";
@@ -10,12 +13,12 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 
 const App = () => {
+  const dispatch = useDispatch();
+
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null);
-  const [messageStyle, setMessageStyle] = useState("");
 
   const blogFormRef = useRef();
 
@@ -36,16 +39,6 @@ const App = () => {
     }
   }, []);
 
-  //function to set a notification for 3 seconds
-  const setNotification = (newMessage, newMessageStyle) => {
-    setMessage(newMessage);
-    setMessageStyle(newMessageStyle);
-
-    setTimeout(() => {
-      setMessage(null);
-      setMessageStyle("");
-    }, 3000);
-  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -63,7 +56,7 @@ const App = () => {
       setPassword("");
       setUsername("");
     } catch (exception) {
-      setNotification("wrong username or password", "error");
+      setNotification(dispatch, { message: "wrong username or password", style: "error" });
       console.log(exception);
     }
   };
@@ -81,10 +74,10 @@ const App = () => {
     //update the blog state-array
     setBlogs(blogs.concat(addedBlog));
     //set success message
-    setNotification(
-      `a new blog ${addedBlog.title} by ${addedBlog.author} added`,
-      "success"
-    );
+    setNotification(dispatch, {
+      message: `a new blog ${addedBlog.title} by ${addedBlog.author} added`,
+      style: "success"
+    });
   };
 
   const updateBlog = async (id, newBlog) => {
@@ -106,7 +99,7 @@ const App = () => {
         setBlogs(blogs.filter((blog) => blog.id !== id));
       }
     } catch (exception) {
-      setNotification(exception.response.statusText, "error");
+      setNotification(dispatch, { message: exception.response.statusText, style: "error" });
     }
   };
 
@@ -116,7 +109,7 @@ const App = () => {
       <>
         <h2>Login to the application</h2>
 
-        <Notification message={message} style={messageStyle} />
+        <Notification />
 
         <LoginForm
           username={username}
@@ -133,7 +126,7 @@ const App = () => {
     <div>
       <h1>Blogs</h1>
 
-      <Notification message={message} style={messageStyle} />
+      <Notification />
 
       <div>
         {user.name + " logged in "}
