@@ -1,116 +1,20 @@
-import { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import Home from "./components/Home";
+import Users from "./components/Users";
 
-import { setNotification } from "./reducers/notificationSlice";
-import { fetchBlogs } from "./reducers/blogSlice";
-import { storeUser, removeUser } from "./reducers/userSlice";
-
-import BlogList from "./components/BlogList";
-import LoginForm from "./components/LoginForm";
-import BlogForm from "./components/BlogForm";
-import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
-
-import blogService from "./services/blogs";
-import loginService from "./services/login";
+//react router imports
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from "react-router-dom";
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  const blogs = useSelector(state => state.blogs);
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const blogFormRef = useRef();
-
-  useEffect(() => {
-    dispatch(fetchBlogs);
-  }, []);
-
-  //login to persist when refreshing the page by checking if user is set in the local storage
-  useEffect(() => {
-    console.log(
-      "useEffect fired: checking if user-JSON has been set in the window.localStorage"
-    );
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      dispatch(storeUser(user));
-      blogService.setToken(user.token);
-    }
-  }, []);
-
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-
-      blogService.setToken(user.token);
-      dispatch(storeUser(user));
-      setPassword("");
-      setUsername("");
-    } catch (exception) {
-      setNotification(dispatch, { message: "wrong username or password", style: "error" });
-      console.log(exception);
-    }
-  };
-
-  const handleLogout = () => {
-    window.localStorage.removeItem("loggedBlogappUser");
-    dispatch(removeUser());
-  };
-
-  const toggleFormAfterCreatingBlog = () => {
-    blogFormRef.current.toggleVisibility();
-  }
-
-  const user = useSelector(state => state.user);
-  //render login-form if user is not logged in
-  if (user === null) {
-    return (
-      <>
-        <h2>Login to the application</h2>
-
-        <Notification />
-
-        <LoginForm
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        />
-      </>
-    );
-  }
-
   return (
-    <div>
-      <h1>Blogs</h1>
-
-      <Notification />
-
-      <div>
-        {user.name + " logged in "}
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <h2>Create a new blog</h2>
-        <BlogForm toggle={toggleFormAfterCreatingBlog} />
-      </Togglable>
-
-      <BlogList blogs={blogs} />
-    </div>
-  );
-};
+    <Router>
+      <Routes>
+        <Route path="/users" element={<Users />}/>
+      </Routes>
+    </Router>
+  )
+}
 
 export default App;
