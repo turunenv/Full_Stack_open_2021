@@ -1,7 +1,7 @@
-import Blogs from "./components/Blogs";
-import Blog from "./components/Blog";
-import Users from "./components/Users";
-import User from "./components/User";
+import Blogs from "./components/views/Blogs";
+import Blog from "./components/views/Blog";
+import Users from "./components/views/Users";
+import User from "./components/views/User";
 import Navbar from "./components/Navbar";
 
 import { fetchBlogs } from "./reducers/blogSlice";
