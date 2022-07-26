@@ -1,13 +1,21 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/blog");
 const User = require("../models/user");
+const Comment = require("../models/comment");
 
 const middleware = require("../utils/middleware");
 
 blogRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({}).populate("user", "-blogs");
-  response.json(blogs);
+  const blogs = await Blog.find({})
+                      .populate("user", "-blogs");
+  return response.json(blogs);
 });
+
+blogRouter.get("/:id", async (request, response) => {
+  const blog = await Blog.findById(request.params.id);
+
+  return response.json(blog);
+})
 
 blogRouter.post("/", middleware.userExtractor, async (request, response) => {
   const params = request.body;
@@ -89,5 +97,30 @@ blogRouter.put("/:id", middleware.userExtractor, async (request, response) => {
   }).populate("user", "-blogs");
   response.json(updatedBlog);
 });
+
+
+blogRouter.post("/:id/comments", async (request, response) => {
+  const { comment, blog } = request.body;
+
+  //comment minimum 3 characters
+  if (comment.length < 3) {
+    return response.status(400).json({
+      error: "comment should be at least three characters"
+    })
+  };
+  
+  const blogComment = new Comment({
+    comment,
+    blog,
+  });
+  const addedComment = await blogComment.save();
+  response.status(201).json(addedComment);
+})
+
+blogRouter.get("/:id/comments", async (request, response) => {
+  const id = request.params.id;
+  const comments = await Comment.find({ blog: id });
+  return response.json(comments)
+})
 
 module.exports = blogRouter;
