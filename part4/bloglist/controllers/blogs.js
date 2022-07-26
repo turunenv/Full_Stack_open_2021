@@ -77,6 +77,10 @@ blogRouter.delete(
       `action authorized, preparing to remove blog ${blogToDelete._id}`
     );
     await Blog.findByIdAndRemove(request.params.id);
+
+    //also remove all comments belonging to this blog
+    await Comment.deleteMany({ blog: request.params.id });
+    
     response.status(204).end();
   }
 );
