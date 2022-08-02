@@ -2,37 +2,34 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import StyledBlogList from "./styles/BlogList.styled";
+
 const BlogList = () => {
   const blogs = useSelector((state) => state.blogs);
+  const user = useSelector(state => state.user);
 
-  const blogListStyle = {
-    marginTop: 10,
-    padding: 0,
-  };
-
-  const blogLinkStyle = {
-    marginTop: 5,
-    border: "2px solid black",
-    paddingTop: 4,
-    paddingLeft: 3,
-  }
   // sort the blogs by the number of likes in descending order
   const sortedBlogs = [...blogs].sort(
     (blog1, blog2) => blog2.likes - blog1.likes
   );
-
+  //if user is not logged in, only render the blog names as text
   return (
-    <ul style={blogListStyle}>
+    <StyledBlogList>
       {sortedBlogs.map((blog) => {
         return (
-          <li key={blog.id} style={blogLinkStyle}>
-            <Link to={`/blogs/${blog.id}`}>
-              <em>{blog.title}</em> by {blog.author}
-            </Link>
+          <li key={blog.id}>
+            {user ?
+              <Link to={`/blogs/${blog.id}`}>
+                <em>{blog.title}</em> by {blog.author}
+              </Link> :
+              <span>
+                <em>{blog.title}</em> by {blog.author}
+              </span>
+            }
           </li>
         );
       })}
-    </ul>
+    </StyledBlogList>
   );
 };
 

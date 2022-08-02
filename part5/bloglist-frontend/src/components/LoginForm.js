@@ -1,7 +1,9 @@
+import StyledLoginForm from "./styles/LoginForm.styled";
+
 const LoginForm = (props) => (
-  <form onSubmit={props.handleLogin}>
+  <StyledLoginForm onSubmit={props.handleLogin}>
     <div>
-      <label htmlFor="Username">username</label>
+      <label htmlFor="Username">username:</label>
       <input
         type="text"
         value={props.username}
@@ -11,7 +13,7 @@ const LoginForm = (props) => (
       />
     </div>
     <div>
-      <label htmlFor="Password">password</label>
+      <label htmlFor="Password">password:</label>
       <input
         type="text"
         value={props.password}
@@ -23,7 +25,7 @@ const LoginForm = (props) => (
     <button type="submit" className="login-button">
       login
     </button>
-  </form>
+  </StyledLoginForm>
 );
 
 export default LoginForm;

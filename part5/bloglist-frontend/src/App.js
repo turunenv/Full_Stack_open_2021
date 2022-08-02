@@ -2,11 +2,15 @@ import Blogs from "./components/views/Blogs";
 import Blog from "./components/views/Blog";
 import Users from "./components/views/Users";
 import User from "./components/views/User";
+import Login from "./components/views/Login";
+
 import Navbar from "./components/Navbar";
 
 import { fetchBlogs } from "./reducers/blogSlice";
 import { storeUser } from "./reducers/userSlice";
 import blogService from "./services/blogs";
+
+import GlobalStyles from "./components/styles/Global";
 
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -16,6 +20,7 @@ import {
   BrowserRouter as Router,
   Routes, Route, Navigate //,Link
 } from "react-router-dom";
+
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,11 +44,12 @@ const App = () => {
   }, []);
   return (
     <div>
+      <GlobalStyles />
       <Router>
         <Navbar />
-        <h2>Blog-app</h2>
         <Routes>
           <Route path="/" element={<Navigate to="/blogs"/>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/blogs" element={<Blogs />}/>
           <Route path="/blogs/:id" element={<Blog />} />
           <Route path="/users" element={<Users />} />

@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import StyledNavbar from "./styles/Navbar.styled";
+
 import { removeUser } from "../reducers/userSlice";
 
 //navbar gets the user as props to handle conditional rendering
@@ -14,7 +16,7 @@ const Navbar = () => {
     dispatch(removeUser());
   };
   return (
-    <div>
+    <StyledNavbar>
       <Link to="/blogs">blogs</Link>
       <Link to="/users">users</Link>
       {user ? (
@@ -23,8 +25,8 @@ const Navbar = () => {
           <button onClick={handleLogout}>logout</button>
         </>
       ) :
-        <Link to="/">login</Link>}
-    </div>
+        <Link to="/login">login</Link>}
+    </StyledNavbar>
   );
 };
 
